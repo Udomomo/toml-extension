@@ -1,0 +1,11 @@
+.vscode/**
+client/**
+server/**
+node_modules/@types/**
+node_modules/typescript/**
+node_modules/@vscode/**
+out/**/*.d.ts
+out/**/*.js.map
+out/tsconfig.tsbuildinfo
+*.vsix
+tsconfig.json
