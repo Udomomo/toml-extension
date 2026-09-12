@@ -63,7 +63,9 @@
   },
   "scripts": {
     "compile": "tsc -b",
-    "test": "tsx --test analyzer/test/*.test.ts",
+    "test": "npm run test:unit && npm run test:conformance",
+    "test:unit": "tsx --test analyzer/test/analyze.test.ts",
+    "test:conformance": "tsx --test analyzer/test/conformance.test.ts",
     "check-types": "tsc -b --pretty && tsc -p tsconfig.test.json --pretty",
     "watch": "tsc -b -w",
     "package": "npm run compile && vsce package",
