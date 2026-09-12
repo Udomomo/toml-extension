@@ -2,10 +2,13 @@
   "files": [],
   "references": [
     {
-      "path": "./client"
+      "path": "./analyzer"
     },
     {
       "path": "./server"
+    },
+    {
+      "path": "./client"
     }
   ]
 }

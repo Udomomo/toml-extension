@@ -1,19 +1,16 @@
 {
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "commonjs",
-    "lib": [
-      "ES2020"
-    ],
     "outDir": "../out/server",
     "rootDir": "src",
-    "strict": true,
-    "sourceMap": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
-    "composite": true
+    "composite": true,
+    "tsBuildInfoFile": "../out/server.tsbuildinfo"
   },
+  "references": [
+    {
+      "path": "../analyzer"
+    }
+  ],
   "include": [
     "src/**/*.ts"
   ]

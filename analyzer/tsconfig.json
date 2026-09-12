@@ -1,10 +1,10 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../out/client",
-    "rootDir": "src",
     "composite": true,
-    "tsBuildInfoFile": "../out/client.tsbuildinfo"
+    "outDir": "../out/analyzer",
+    "rootDir": "src",
+    "tsBuildInfoFile": "../out/analyzer.tsbuildinfo"
   },
   "include": [
     "src/**/*.ts"
