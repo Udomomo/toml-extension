@@ -28,6 +28,13 @@ toml-extension/
 │   ├── src/extension.ts
 │   ├── test/extension.test.ts
 │   └── tsconfig.json
+├── tools/
+│   └── toml-test/
+│       └── v2.2.0/
+│           ├── darwin-arm64/toml-test
+│           ├── linux-amd64/toml-test
+│           ├── README.md
+│           └── LICENSE
 ├── syntaxes/
 │   ├── toml.tmLanguage.json
 │   └── test/grammar.test.ts
@@ -53,6 +60,7 @@ TOMLの解析と、パーサー固有のエラーからエディター非依存�
 - `src/index.ts`: analyzerの公開API
 - `test/analyze.test.ts`: 解析と診断offsetの単体テスト
 - `test/conformance.test.ts`: 公式toml-testを使った適合性テスト
+- `test/conformance/decoder.ts`: 公式typed JSONを出力するテスト専用decoder
 - `test/fixtures/`: analyzerのテストに固有の入力データ
 
 `analyzer`はVS Code、Language Server Protocol、`client`、`server`のいずれにも依存させない。これにより、エディターを起動せずに適合性テストを実行でき、将来ほかのフロントエンドからも再利用できる。
@@ -113,6 +121,25 @@ VS Code
 TypeScriptでもこの内部importを解決できるよう、共通設定ではNode.jsのpackage importsに対応したmodule resolutionを使用する。ビルド時はproject referenceにより`analyzer`を`server`より先に生成する。
 
 VSIXには`out/analyzer`を含め、`analyzer`のソースとテストは含めない。実行時依存である`toml`パッケージもVSIXへ含める。
+
+公式適合性テストのrunnerと固定バイナリは`tools/toml-test/v2.2.0`に置く。macOS arm64では`darwin-arm64/toml-test`、Linux x64では`linux-amd64/toml-test`を使用し、その他のOS・CPUでは未対応環境としてテストを失敗させる。バイナリの出所、取得手順、SHA-256、MIT Licenseは同じディレクトリの`README.md`と`LICENSE`に記録する。
+
+適合性テストは次のコマンドで実行する。decoderはstdinからTOMLを読み、公式typed JSONをstdoutへ出力するテスト専用コードである。
+
+```sh
+npm run test:conformance
+```
+
+runnerは`toml-test test -toml=1.1`を実行し、VS CodeとLanguage Serverで復元できない不正UTF-8に関する次の6件だけを個別にskipする。`-skip-must-err`により、skip対象が将来通常成功するとテストも失敗する。
+
+- `invalid/encoding/bad-codepoint`
+- `invalid/encoding/bad-utf8-in-comment`
+- `invalid/encoding/bad-utf8-in-multiline`
+- `invalid/encoding/bad-utf8-in-multiline-literal`
+- `invalid/encoding/bad-utf8-in-string`
+- `invalid/encoding/bad-utf8-in-string-literal`
+
+テスト用バイナリ、decoder、適合性テストコードは`.vscodeignore`でVSIXから除外し、ビルド済みの`out/analyzer`と実行時依存の`toml`は除外しない。
 
 ## 解析APIとLSP境界
 
@@ -216,4 +243,3 @@ npm test
 npm run compile
 npm run package
 ```
-
